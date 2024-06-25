@@ -7,6 +7,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { CalendarService } from '../shared/calendar.service';
 import { Appointment } from '../shared/appointment.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-appointment-form',
@@ -49,7 +50,8 @@ export class AppointmentFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -68,10 +70,13 @@ export class AppointmentFormComponent implements OnInit {
     if (this.appointmentForm.valid) {
       const appointment: Appointment = {
         id: crypto.randomUUID(),
-        ...this.appointmentForm.value
+        title: this.appointmentForm.value.title,
+        description: this.appointmentForm.value.description,
+        date: new Date(this.appointmentForm.value.date) // Ensure this is a Date object
       };
       this.calendarService.addAppointment(appointment);
       this.appointmentForm.reset();
+      this.router.navigate(['/']);
     }
   }
 }
