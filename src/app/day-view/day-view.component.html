@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Appointments for {{ data.date | date : "fullDate" }}</h2>
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let appointment of data.appointments">
+      <h3 matListItemTitle>{{ appointment.title }}</h3>
+      <p matListItemLine>{{ appointment.description }}</p>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,26 @@
+<div class="calendar-container">
+  <div *ngFor="let date of calendarDates; let i = index" class="calendar-day">
+    <h3 (click)="openDayView(date)">{{ date | date:'shortDate' }}</h3>
+    <div
+      cdkDropList
+      [id]="'list-' + i"
+      [cdkDropListData]="getAppointmentsForDate(date)"
+      [cdkDropListConnectedTo]="dropListIds"
+      (cdkDropListDropped)="onDrop($event, date)"
+      class="appointment-list">
+      <mat-card
+        *ngFor="let appointment of getAppointmentsForDate(date)"
+        cdkDrag
+        [cdkDragData]="appointment">
+        <mat-card-title>{{ appointment.title }}</mat-card-title>
+        <mat-card-content>
+          <p>{{ appointment.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="editAppointment(appointment)">Edit</button>
+          <button mat-button color="warn" (click)="deleteAppointment(appointment.id)">Delete</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

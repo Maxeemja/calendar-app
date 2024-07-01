@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -18,32 +23,10 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonModule
+    MatButtonModule,
   ],
-  template: `
-    <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <input matInput placeholder="Title" formControlName="title">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <textarea matInput placeholder="Description" formControlName="description"></textarea>
-      </mat-form-field>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!appointmentForm.valid">Add Appointment</button>
-    </form>
-  `,
-  styles: [`
-    form {
-      display: flex;
-      flex-direction: column;
-      max-width: 300px;
-      margin: 20px auto;
-    }
-  `]
+  templateUrl: './appointment-form.component.html',
+  styleUrls: ['./appointment-form.component.scss'],
 })
 export class AppointmentFormComponent implements OnInit {
   appointmentForm!: FormGroup;
@@ -58,10 +41,10 @@ export class AppointmentFormComponent implements OnInit {
     this.appointmentForm = this.fb.group({
       title: ['', [Validators.required]],
       date: [new Date(), [Validators.required]],
-      description: ['']
+      description: [''],
     });
 
-    this.appointmentForm.valueChanges.subscribe(value => {
+    this.appointmentForm.valueChanges.subscribe((value) => {
       console.log('Form value changed:', value);
     });
   }
@@ -72,7 +55,7 @@ export class AppointmentFormComponent implements OnInit {
         id: crypto.randomUUID(),
         title: this.appointmentForm.value.title,
         description: this.appointmentForm.value.description,
-        date: new Date(this.appointmentForm.value.date) // Ensure this is a Date object
+        date: new Date(this.appointmentForm.value.date),
       };
       this.calendarService.addAppointment(appointment);
       this.appointmentForm.reset();
